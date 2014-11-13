@@ -6,12 +6,14 @@
 	<artifactId>elasticsearch-sentiment</artifactId>
 	<version>1.0.0</version>
 	<packaging>pom</packaging>
-	<name>ElasticSearch Sentiment</name>
+	<name>ElasticSearch Sentiment[Main POM]</name>
 	<description>Development on Sentiment Search Service Based on ElasticSearch.</description>
 
 	<modules>
 		<module>elasticsearch-parent</module>
-		<module>elasticsearch-jdbc</module>
+		<module>elasticsearch-dao</module>
+		<!-- <module>elasticsearch-jdbc</module> -->
+		<module>elasticsearch-core</module>
 		<module>elasticsearch-web</module>
 	</modules>
 
