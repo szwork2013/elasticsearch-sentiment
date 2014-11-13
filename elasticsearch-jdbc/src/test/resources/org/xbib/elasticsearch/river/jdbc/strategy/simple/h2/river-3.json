@@ -1,0 +1,11 @@
+{
+    "jdbc" : {
+        "url" : "jdbc:h2:./target/test",
+        "user" : "",
+        "password" : "",
+        "sql" : "select * from \"products\"",
+        "maxrows" : 50,
+        "index" : "my_jdbc_river_index",
+        "type" : "my_jdbc_river_type"
+    }
+}
