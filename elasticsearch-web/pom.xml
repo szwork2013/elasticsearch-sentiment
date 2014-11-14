@@ -112,7 +112,6 @@
 				<version>2.4</version>
 				<configuration>
 					<excludes>
-						<exclude>elastic_search.properties</exclude>
 						<exclude>logback.xml</exclude>
 						<exclude>web-server.properties</exclude>
 					</excludes>
