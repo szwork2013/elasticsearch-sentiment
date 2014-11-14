@@ -36,13 +36,7 @@ public class IndexServerResource extends ServerResource {
 
 	@Get("json")
 	public String getData() {
-		return "ok ";
+		return "ok! ";
 	}
-	/*@Get
-	public Representation toJson() {
-		Weibo weibo = new Weibo();
-		weibo.setContent("hello every body!");
-		return new JacksonRepresentation<Weibo>(weibo);
-	}*/
 
 }

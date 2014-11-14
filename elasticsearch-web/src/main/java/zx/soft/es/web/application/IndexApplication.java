@@ -6,8 +6,8 @@ import org.restlet.Application;
 import org.restlet.Restlet;
 import org.restlet.routing.Router;
 
+import zx.soft.es.index.Index;
 import zx.soft.es.model.Weibo;
-import zx.soft.es.search.Index;
 import zx.soft.es.web.resource.IndexServerResource;
 
 /**

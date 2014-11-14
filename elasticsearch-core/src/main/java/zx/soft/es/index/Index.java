@@ -1,4 +1,4 @@
-package zx.soft.es.search;
+package zx.soft.es.index;
 
 import java.io.IOException;
 import java.util.List;

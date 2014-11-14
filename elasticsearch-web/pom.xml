@@ -18,6 +18,11 @@
 			<groupId>org.elasticsearch</groupId>
 			<artifactId>elasticsearch</artifactId>
 		</dependency>
+		<dependency>
+		<groupId>zx.soft</groupId>
+		<artifactId>elasticsearch-core</artifactId>
+		<version>${project.version}</version>
+		</dependency>
 		<!-- Restlet包 -->
 		<dependency>
 			<groupId>org.restlet.jse</groupId>

@@ -116,6 +116,7 @@ public class WeiboData {
 		data.setRecords(weibos);
 		System.out.println(JsonUtils.toJsonWithoutPretty(data));
 		//System.out.println(JsonUtils.toJson(data));
+
 	}
 
 }

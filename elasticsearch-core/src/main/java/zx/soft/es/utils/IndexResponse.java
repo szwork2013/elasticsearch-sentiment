@@ -37,7 +37,5 @@ public class IndexResponse {
 		public IndexResponse build() {
 			return new IndexResponse(this);
 		}
-
 	}
-
 }
