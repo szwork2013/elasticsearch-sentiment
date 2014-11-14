@@ -20,7 +20,6 @@
 		<dependency>
 			<groupId>org.elasticsearch</groupId>
 			<artifactId>elasticsearch</artifactId>
-			<version>1.0.1</version>
 		</dependency>
 		<!-- json 包-->
 			<dependency>

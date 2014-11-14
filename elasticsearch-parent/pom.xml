@@ -12,7 +12,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.build.outputEncoding>UTF-8</project.build.outputEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<elasticsearch.version>1.4.0</elasticsearch.version>
+		<elasticsearch.version>1.0.1</elasticsearch.version>
 		<spring.version>3.2.3.RELEASE</spring.version>
 		<slf4j.version>1.7.7</slf4j.version>
 		<logback.version>1.1.2</logback.version>
