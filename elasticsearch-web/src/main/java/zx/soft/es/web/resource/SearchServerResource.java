@@ -3,6 +3,8 @@ package zx.soft.es.web.resource;
 import java.util.HashMap;
 
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.common.unit.TimeValue;
+import org.elasticsearch.index.query.QueryStringQueryBuilder.Operator;
 import org.restlet.data.Form;
 import org.restlet.data.Parameter;
 import org.restlet.resource.Get;
@@ -10,8 +12,7 @@ import org.restlet.resource.ServerResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import zx.soft.es.model.RequestParams;
-import zx.soft.es.model.SearchParams;
+import zx.soft.es.model.SearchParameters;
 import zx.soft.es.utils.IndexResponse;
 import zx.soft.es.utils.URLUtils;
 import zx.soft.es.web.application.SearchApplication;
@@ -20,15 +21,13 @@ public class SearchServerResource extends ServerResource {
 
 	private static Logger logger = LoggerFactory.getLogger(SearchServerResource.class);
 	private SearchApplication application;
-	private SearchParams searchParams;
-	private RequestParams requestParams;
+	private SearchParameters searchParameters;
 
 	@Override
 	public void doInit() {
 
 		application = (SearchApplication) getApplication();
-		searchParams = new SearchParams();
-		requestParams = new RequestParams();
+		searchParameters = new SearchParameters();
 		HashMap<String, String> params = new HashMap<>();
 		Form form = getRequest().getResourceRef().getQueryAsForm();
 		for (Parameter p : form) {
@@ -38,31 +37,30 @@ public class SearchServerResource extends ServerResource {
 				params.put(p.getName(), p.getValue());
 			}
 		}
-		searchParams.setField(params.get("field") == null ? "content" : params.get("field"));
-		searchParams.setKeyword(params.get("keyword") == null ? "" : params.get("keyword"));
-		searchParams.setKeywords(params.get("keywords") == null ? "" : params.get("keywords"));
-		searchParams.setPrefixword(params.get("prefixword") == null ? "" : params.get("prefixword"));
-		searchParams.setId(params.get("id") == null ? "1" : params.get("id"));
-		searchParams.setLikethis(params.get("likethis") == null ? "" : params.get("likethis"));
-		searchParams.setMaxNum(params.get("maxNum") == null ? 100 : Integer.parseInt(params.get("maxNum")));
-		searchParams.setMinFreq(params.get("minFreq") == null ? 0 : Integer.parseInt(params.get("minFreq")));
-		searchParams.setLow(params.get("low") == null ? 0 : Integer.parseInt(params.get("low")));
-		searchParams.setUp(params.get("up") == null ? 10 : Integer.parseInt(params.get("up")));
-		searchParams.setMaxEndPosition(params.get("maxEndPosition") == null ? 1 : Integer.parseInt(params
-				.get("maxEndPosition")));
-		searchParams.setInfield(params.get("infield") == null ? "" : params.get("infield"));
-		searchParams.setExfield(params.get("exfield") == null ? "" : params.get("exfield"));
-		searchParams.setInkeyword(params.get("inkeyword") == null ? "" : params.get("inkeyword"));
-		searchParams.setExkeyword(params.get("exkeyword") == null ? "" : params.get("exkeyword"));
-		searchParams.setWildcard(params.get("wildcard") == null ? "" : params.get("wildcard"));
+		searchParameters.setQ(params.get("q") == null ? "*" : params.get("q"));
+		searchParameters.setDf(params.get("df") == null ? "_all" : params.get("df"));
+		searchParameters.setAnalyzer(params.get("analyzer") == null ? "ik" : params.get("analyzer"));
+		searchParameters.setDefault_operator(params.get("default_operator") == null ? Operator.AND : Operator
+				.valueOf(params.get("default_operator")));
+		searchParameters.setExplain(Boolean.valueOf(params.get("explain")) == null ? false : Boolean.valueOf(params
+				.get("explain")));
+		searchParameters.set_source(Boolean.valueOf(params.get("_source")) == null ? false : Boolean.valueOf(params
+				.get("_source")));
+		searchParameters.setFields(params.get("fields") == null ? "" : params.get("fields"));
+		searchParameters.setSort(params.get("sort") == null ? "" : params.get("sort"));
+		searchParameters.setTrack_scores(params.get("track_scores") == null ? true : Boolean.valueOf(params
+				.get("track_scores")));
+		searchParameters.setTimeout(params.get("timeout") == null ? new TimeValue(0) : new TimeValue(Long
+				.getLong(params.get("timeout"))));
+		searchParameters.setFrom(params.get("from") == null ? 0 : Integer.valueOf(params.get("from")));
+		searchParameters.setSize(params.get("size") == null ? 10 : Integer.valueOf(params.get("size")));
+		searchParameters.setSearch_type(params.get("search_type") == null ? "query_then_fetch" : params.get("exfield"));
+		searchParameters.setLowercase_expanded_terms(params.get("lowercase_expanded_terms") == null ? true : Boolean
+				.valueOf(params.get("lowercase_expanded_terms")));
+		searchParameters.setAnalyze_wildcard(params.get("analyze_wildcard") == null ? true : Boolean.valueOf(params
+				.get("analyze_wildcard")));
 
-		requestParams.setIndex(params.get("index") == null ? "spiderindextest" : params.get("index"));
-		requestParams.setType(params.get("type") == null ? "spidertypetest" : params.get("type"));
-		requestParams.setFrom(params.get("from") == null ? 0 : Integer.parseInt(params.get("from")));
-		requestParams.setSize(params.get("size") == null ? 10 : Integer.parseInt(params.get("size")));
-		requestParams.setExplain(params.get("explain") == null ? false : Boolean.parseBoolean(params.get("explain")));
-		System.out.println(searchParams.toString());
-		System.out.println(requestParams.toString());
+		System.out.println(searchParameters.toString());
 	}
 
 	@Get("json")
@@ -74,7 +72,7 @@ public class SearchServerResource extends ServerResource {
 			return new IndexResponse.Builder(-1, "illegal url!");
 		}
 
-		SearchResponse response = application.doSearch(searchParams, requestParams);
+		SearchResponse response = application.doSearch(searchParameters);
 
 		return response.toString();
 	}
