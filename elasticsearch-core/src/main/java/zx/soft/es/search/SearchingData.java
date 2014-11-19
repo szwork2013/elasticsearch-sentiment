@@ -5,6 +5,8 @@ import java.io.IOException;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.unit.TimeValue;
+import org.elasticsearch.index.query.FilterBuilder;
+import org.elasticsearch.index.query.FilterBuilders;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.QueryStringQueryBuilder;
 import org.elasticsearch.index.query.QueryStringQueryBuilder.Operator;
@@ -51,6 +53,16 @@ public class SearchingData {
 		searchRequest.setQuery(qb);
 		logger.info("set query succeed!");
 
+		if (searchParameters.getFq() != "*") {
+
+			QueryStringQueryBuilder queryBuilder = QueryBuilders.queryString(searchParameters.getFq())
+					.defaultOperator(searchParameters.getDefault_operator()).analyzer(searchParameters.getAnalyzer())
+					.lowercaseExpandedTerms(searchParameters.isLowercase_expanded_terms())
+					.analyzeWildcard(searchParameters.isAnalyze_wildcard());
+			FilterBuilder filterBuilder = FilterBuilders.queryFilter(queryBuilder);
+			searchRequest.setPostFilter(filterBuilder);
+		}
+
 		if (searchParameters.getExplain() != false)
 			searchRequest.setExplain(searchParameters.getExplain());
 
@@ -80,18 +92,18 @@ public class SearchingData {
 		}
 		if (searchParameters.is_source() != false)
 			searchRequest.setFetchSource(searchParameters.is_source());
-
 		return searchRequest.execute().actionGet();
 	}
 
 	public static void main(String[] args) throws IOException {
 		SearchParameters searchParameters = new SearchParameters();
-		searchParameters.setQ(" 天气不错  武汉");
-		searchParameters.setTimeout(new TimeValue(100000));
+		searchParameters.setQ(" 数据 ");
+		searchParameters.setTimeout(new TimeValue(1000000));
 		searchParameters.setSize(5);
-		searchParameters.setFields("_source,content,nickname");
+		searchParameters.setFields("_source,content,nickname,read_count");
 		//searchParameters.setLowercase_expanded_terms(Boolean.FALSE);
-		searchParameters.setTrack_scores(false);
+		//searchParameters.setTrack_scores(false);
+		//searchParameters.setFq("lasttime:[1416384000 TO 1416384010]");
 		//searchParameters.setFrom(1);
 		//searchParameters.setExplain(true);
 		//searchParameters.setDefault_operator(Operator.OR);

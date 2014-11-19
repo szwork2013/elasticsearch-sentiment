@@ -4,9 +4,12 @@ import java.io.IOException;
 import java.util.List;
 
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
+import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import zx.soft.es.client.BuildClient;
 import zx.soft.es.model.Weibo;
@@ -15,6 +18,7 @@ public class Index {
 
 	private final String index = "spiderindextest";
 	private final String type = "spidertypetest";
+	private static Logger logger = LoggerFactory.getLogger(Index.class);
 
 	public void createIndex(List<Weibo> weibos) {
 		XContentBuilder doc;
@@ -54,7 +58,10 @@ public class Index {
 				throw new RuntimeException(e);
 			}
 		}
-		bulkRequest.execute().actionGet();
+		BulkResponse bulkResponse = bulkRequest.execute().actionGet();
 		client.close();
+		if (bulkResponse.hasFailures()) {
+			logger.info(bulkResponse.buildFailureMessage());
+		}
 	}
 }

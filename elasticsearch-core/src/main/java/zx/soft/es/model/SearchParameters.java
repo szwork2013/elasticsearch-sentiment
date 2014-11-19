@@ -11,13 +11,15 @@ public class SearchParameters {
 	//查询语句中未定义字段时，采用此处设置的field
 	private String df = "_all";
 
+	//过滤查询参数
+	private String fq = "*";
 	//解析查询字符串时使用的分词器;
 	private String analyzer = "ik";
 
 	//逻辑操作:AND,OR 默认是 OR.
 	private Operator default_operator = Operator.AND;
 
-	//For each hit, contain an explanation of how scoring of the hits was computed.
+	//设置是否按查询匹配度排序
 	private boolean explain = Boolean.FALSE;
 
 	//设置为false，禁止返回_source字段
@@ -177,6 +179,14 @@ public class SearchParameters {
 
 	public void setAnalyze_wildcard(boolean analyze_wildcard) {
 		this.analyze_wildcard = analyze_wildcard;
+	}
+
+	public String getFq() {
+		return fq;
+	}
+
+	public void setFq(String fq) {
+		this.fq = fq;
 	}
 
 }

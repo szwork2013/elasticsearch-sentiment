@@ -59,7 +59,7 @@ public class SearchServerResource extends ServerResource {
 				.valueOf(params.get("lowercase_expanded_terms")));
 		searchParameters.setAnalyze_wildcard(params.get("analyze_wildcard") == null ? true : Boolean.valueOf(params
 				.get("analyze_wildcard")));
-
+		searchParameters.setFq(params.get("fq") == null ? "*" : params.get("fq"));
 		System.out.println(searchParameters.toString());
 	}
 
