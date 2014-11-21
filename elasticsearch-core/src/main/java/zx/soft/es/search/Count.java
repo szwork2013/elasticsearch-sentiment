@@ -1,5 +1,7 @@
 package zx.soft.es.search;
 
+import java.io.IOException;
+
 import org.elasticsearch.action.count.CountResponse;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -11,7 +13,7 @@ import zx.soft.es.model.SearchParameters;
 
 public class Count {
 
-	public static CountResult getMatchCount(SearchParameters searchParameters) {
+	public CountResult getMatchCount(SearchParameters searchParameters) throws IOException {
 		CountResult result = new CountResult();
 		CountResponse response = null;
 		if (searchParameters.getQ() != "") {
@@ -41,6 +43,6 @@ public class Count {
 		//searchParameters.setFrom(1);
 		//searchParameters.setExplain(true);
 		//searchParameters.setDefault_operator(Operator.OR);
-		System.out.println(getMatchCount(searchParameters).toString());
+		//System.out.println(getMatchCount(searchParameters).toString());
 	}
 }

@@ -92,6 +92,7 @@ public class SearchingData {
 		}
 		if (searchParameters.is_source() != false)
 			searchRequest.setFetchSource(searchParameters.is_source());
+
 		return searchRequest.execute().actionGet();
 	}
 
@@ -107,6 +108,7 @@ public class SearchingData {
 		//searchParameters.setFrom(1);
 		//searchParameters.setExplain(true);
 		//searchParameters.setDefault_operator(Operator.OR);
-		//System.out.println(doSearch(searchParameters));
+		//SearchResponse response = doSearch(searchParameters);
+		//System.out.println(response);
 	}
 }

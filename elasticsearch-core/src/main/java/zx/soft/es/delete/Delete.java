@@ -1,5 +1,7 @@
 package zx.soft.es.delete;
 
+import java.io.IOException;
+
 import org.elasticsearch.action.deletebyquery.DeleteByQueryResponse;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -10,7 +12,7 @@ import zx.soft.es.model.SearchParameters;
 
 public class Delete {
 
-	public static DeleteByQueryResponse deleteByQuery(SearchParameters searchParameters) {
+	public DeleteByQueryResponse deleteByQuery(SearchParameters searchParameters) throws IOException {
 		DeleteByQueryResponse response = null;
 		if (searchParameters.getQ() != "") {
 			QueryBuilder query = QueryBuilders.queryString(searchParameters.getQ())
@@ -36,6 +38,6 @@ public class Delete {
 		//searchParameters.setFrom(1);
 		//searchParameters.setExplain(true);
 		//searchParameters.setDefault_operator(Operator.OR);
-		System.out.println(deleteByQuery(searchParameters).status());
+		//System.out.println(deleteByQuery(searchParameters).status());
 	}
 }

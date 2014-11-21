@@ -6,7 +6,7 @@ import org.restlet.Application;
 import org.restlet.Restlet;
 import org.restlet.routing.Router;
 
-import zx.soft.es.index.Index;
+import zx.soft.es.index.BulkIndex;
 import zx.soft.es.model.Weibo;
 import zx.soft.es.web.resource.IndexServerResource;
 
@@ -17,10 +17,12 @@ import zx.soft.es.web.resource.IndexServerResource;
  */
 public class IndexApplication extends Application {
 
-	private final Index in;
+	//private final Index in;
+	private final BulkIndex bulkIndex;
 
 	public IndexApplication() {
-		in = new Index();
+		//in = new Index();
+		bulkIndex = new BulkIndex();
 	}
 
 	@Override
@@ -31,7 +33,8 @@ public class IndexApplication extends Application {
 	}
 
 	public void createIndex(List<Weibo> weibos) {
-		in.createIndex(weibos);
+		//in.createIndex(weibos);
+		bulkIndex.doIndex(weibos);
 	}
 
 }

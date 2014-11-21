@@ -12,9 +12,12 @@ import zx.soft.es.web.jackson.ReplaceConvert;
 /**
  * 搜索服务类
  * 搜索示例：
- *http://192.168.3.22:8085/spider/search?field=content&keywords=hello,大家&size=5
- * @author fgq
- *
+ *http://192.168.3.22:8085/spider/search  GET
+ * 统计总数示例：
+ *http://192.168.6.126:8085/spider/search/count GET
+ *删除示例：
+ *http://192.168.6.126:8085/spider/search DELETE
+ *  @author fgq
  */
 public class ESSearchServer {
 

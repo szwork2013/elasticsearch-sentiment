@@ -2,42 +2,37 @@ package zx.soft.es.web.resource;
 
 import java.util.HashMap;
 
-import org.elasticsearch.action.deletebyquery.DeleteByQueryResponse;
-import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.QueryStringQueryBuilder.Operator;
 import org.restlet.data.Form;
 import org.restlet.data.Parameter;
-import org.restlet.resource.Delete;
 import org.restlet.resource.Get;
 import org.restlet.resource.ServerResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import zx.soft.es.model.CountResult;
 import zx.soft.es.model.SearchParameters;
-import zx.soft.es.utils.IndexResponse;
 import zx.soft.es.utils.URLUtils;
 import zx.soft.es.web.application.SearchApplication;
 
-public class SearchServerResource extends ServerResource {
+public class CountResource extends ServerResource {
 
-	private static Logger logger = LoggerFactory.getLogger(SearchServerResource.class);
 	private SearchApplication application;
 	private SearchParameters searchParameters;
+	private Logger logger = LoggerFactory.getLogger(CountResource.class);
 
 	@Override
 	public void doInit() {
-
 		application = (SearchApplication) getApplication();
 		searchParameters = new SearchParameters();
 		HashMap<String, String> params = new HashMap<>();
 		Form form = getRequest().getResourceRef().getQueryAsForm();
 		for (Parameter p : form) {
-			if (params.get(p.getName()) == null) {
+			if (p.getName() != null) {
 				params.put(p.getName(), p.getValue());
-			} else { // 重复参数以最后一个为准
+			} else
 				params.put(p.getName(), p.getValue());
-			}
 		}
 		searchParameters.setQ(params.get("q") == null ? "*" : params.get("q"));
 		searchParameters.setDf(params.get("df") == null ? "_all" : params.get("df"));
@@ -63,26 +58,15 @@ public class SearchServerResource extends ServerResource {
 				.get("analyze_wildcard")));
 		searchParameters.setFq(params.get("fq") == null ? "*" : params.get("fq"));
 		System.out.println(searchParameters.toString());
+
 	}
 
 	@Get("json")
-	public Object getSearchResult() {
-
-		final String searchURL = URLUtils.getDecoderURL(getReference().toString(), "utf-8");
-		logger.info("search url :" + searchURL);
-		if (getReference().getRemainingPart() == null) {
-			return new IndexResponse.Builder(-1, "illegal url!");
-		}
-
-		SearchResponse response = application.doSearch(searchParameters);
-		return response.toString();
+	public Object getCountResult() {
+		final String countURL = URLUtils.getDecoderURL(getReference().toString(), "utf-8");
+		logger.info("CountURL= " + countURL);
+		CountResult countResult = application.doCount(searchParameters);
+		return countResult.toString();
 	}
 
-	@Delete("json")
-	public Object deleteByQuery() {
-		final String searchURL = URLUtils.getDecoderURL(getReference().toString(), "utf-8");
-		logger.info("search url :" + searchURL);
-		DeleteByQueryResponse response = application.doDeleteByQuery(searchParameters);
-		return response;
-	}
 }
